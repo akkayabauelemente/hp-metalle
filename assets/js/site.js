@@ -3,12 +3,17 @@ const header = document.querySelector("[data-header]");
 const menuBtn = header && header.querySelector(".menu-btn");
 
 function setMenu(open) {
+  if (open) header.style.setProperty("--nav-top", `${header.getBoundingClientRect().bottom}px`);
   header.classList.toggle("is-open", open);
+  document.body.classList.toggle("menu-open", open);
   menuBtn.setAttribute("aria-expanded", String(open));
 }
 if (menuBtn) {
   menuBtn.addEventListener("click", () => setMenu(!header.classList.contains("is-open")));
   header.querySelectorAll(".nav a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
+  header.addEventListener("focusout", (e) => {
+    if (!header.contains(e.relatedTarget)) setMenu(false);
+  });
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && header.classList.contains("is-open")) { setMenu(false); menuBtn.focus(); }
   });
@@ -38,7 +43,7 @@ document.querySelectorAll("form[data-mailto]").forEach((form) => {
       if (!el.name || (el.type === "radio" && !el.checked)) continue;
       let value = el.value.trim();
       if (!value) continue;
-      if (el.type === "date") value = value.split("-").reverse().join(".");
+      if (el.type === "date" && el.valueAsDate) value = new Intl.DateTimeFormat("de-DE", { dateStyle: "medium", timeZone: "UTC" }).format(el.valueAsDate);
       const label = el.dataset.label || (el.id && form.querySelector(`label[for="${el.id}"]`)?.textContent.trim()) || el.name;
       lines.push(`${label}: ${value}`);
     }
@@ -46,6 +51,6 @@ document.querySelectorAll("form[data-mailto]").forEach((form) => {
     const body = encodeURIComponent(lines.join("\n") + "\n");
     window.location.href = `mailto:${form.dataset.mailto}?subject=${subject}&body=${body}`;
     const sent = form.querySelector("[data-sent]");
-    if (sent) sent.hidden = false;
+    if (sent) sent.textContent = form.dataset.sentText || "";
   });
 });
