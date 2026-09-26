@@ -417,7 +417,10 @@ fieldset.field { border: 0; margin: 0 0 14px; padding: 0; min-width: 0; }
   .quick { justify-self: stretch; max-width: none; }
   .facts ul { grid-template-columns: repeat(2, 1fr); }
   .band__grid, .faq, .visit, .split { grid-template-columns: 1fr; }
-  .visit__photo { min-height: 320px; }
+  .visit__photo { min-height: 0; aspect-ratio: 16 / 9; }
+  .visit__photo img { object-position: 50% 38%; }
+  .contact-cards { grid-template-columns: 1fr 1fr; }
+  .contact-cards .card--dark { grid-column: span 2; }
   .mat-groups { grid-template-columns: 1fr 1fr; }
   .mat-groups > :last-child { grid-column: span 2; }
   .footer__grid { grid-template-columns: 1fr 1fr; }
@@ -450,8 +453,9 @@ fieldset.field { border: 0; margin: 0 0 14px; padding: 0; min-width: 0; }
   .steps .ico { grid-row: span 2; margin: 0; }
   .tips { grid-template-columns: 1fr; }
   .cards--2, .cards--3 { grid-template-columns: 1fr; }
-  .visit__cards { grid-template-columns: 1fr; }
-  .visit__cards .card--dark { grid-column: auto; }
+  .visit__cards, .contact-cards { grid-template-columns: 1fr; }
+  .visit__cards .card--dark, .contact-cards .card--dark { grid-column: auto; }
+  .visit__photo { aspect-ratio: 4 / 5; }
   .cards--5 { grid-template-columns: 1fr 1fr; }
   .cards--5 > * { grid-column: auto !important; }
   .split--flip > :first-child { order: 0; }
